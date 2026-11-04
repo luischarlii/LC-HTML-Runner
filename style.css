@@ -1,0 +1,210 @@
+
+:root {
+  --bg: #101827;
+  --panel: #192438;
+  --panel2: #202e44;
+  --gold: #fbbf24;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --border: #34445b;
+  --green: #22c55e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+button {
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: var(--text);
+  padding: 11px 14px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(.97);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: #0b1220;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.logo {
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--gold);
+  color: #111827;
+  font-weight: 900;
+  font-size: 20px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.brand small {
+  color: var(--muted);
+}
+
+main {
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
+  padding: 14px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 17px;
+}
+
+.editor-section,
+.preview-section,
+.console-section {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 17px;
+}
+
+.section-title,
+.preview-header,
+.console-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  font-size: 12px;
+  color: var(--gold);
+  border-bottom: 1px solid var(--border);
+}
+
+#fileName {
+  color: var(--muted);
+  font-weight: normal;
+}
+
+#codeEditor {
+  display: block;
+  width: 100%;
+  min-height: 310px;
+  padding: 15px;
+  resize: vertical;
+  background: #0b1220;
+  color: #a5e1ff;
+  border: none;
+  outline: none;
+  font: 13px/1.65 monospace;
+  tab-size: 2;
+  white-space: pre;
+}
+
+.run-toolbar {
+  display: flex;
+  gap: 9px;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.primary {
+  background: var(--gold);
+  color: #111827;
+  border-color: var(--gold);
+  flex: 1;
+}
+
+#browserBar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 12px;
+  background: #0b1220;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+#preview {
+  display: block;
+  width: 100%;
+  height: 360px;
+  border: 0;
+  background: white;
+}
+
+.preview-header button {
+  padding: 6px 11px;
+  margin-left: 5px;
+}
+
+.console-header button {
+  padding: 6px 10px;
+}
+
+#consoleOutput {
+  margin: 0;
+  padding: 12px;
+  min-height: 65px;
+  max-height: 180px;
+  overflow: auto;
+  color: #86efac;
+  background: #080e18;
+  font: 12px/1.6 monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+  padding: 20px;
+}
+
+#installBtn {
+  color: var(--gold);
+}
+
+@media (min-width: 800px) {
+  main {
+    padding: 24px;
+  }
+
+  #codeEditor {
+    min-height: 400px;
+    font-size: 14px;
+  }
+
+  #preview {
+    height: 500px;
+  }
+}
