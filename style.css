@@ -494,3 +494,81 @@ footer {
   }
 
 }
+
+/* =========================
+   NAVEGADOR INTERNO
+========================= */
+
+.browser-controls {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  padding: 8px;
+
+  background: #080e18;
+
+  border-bottom: 1px solid var(--border);
+
+  overflow: hidden;
+}
+
+.browser-controls button {
+  flex: 0 0 auto;
+
+  min-width: 38px;
+
+  padding: 8px 10px;
+
+  font-size: 14px;
+}
+
+#urlInput {
+  min-width: 0;
+
+  flex: 1;
+
+  height: 36px;
+
+  padding: 0 10px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 8px;
+
+  outline: none;
+
+  background: #111b2c;
+
+  color: var(--text);
+
+  font-size: 12px;
+}
+
+#urlInput:focus {
+  border-color: var(--gold);
+}
+
+#goBtn {
+  color: var(--gold);
+}
+
+@media (max-width: 500px) {
+
+  .browser-controls {
+    gap: 4px;
+  }
+
+  .browser-controls button {
+    min-width: 34px;
+
+    padding: 8px 7px;
+  }
+
+  #goBtn {
+    font-size: 11px;
+  }
+
+}
