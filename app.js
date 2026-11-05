@@ -803,7 +803,308 @@ window.addEventListener(
 
   }
 );
+/* =========================
+   NAVEGADOR INTERNO
+========================= */
 
+const urlInput =
+  document.getElementById("urlInput");
+
+const browserHistory = [];
+
+let browserHistoryIndex = -1;
+
+
+function normalizeUrl(value) {
+
+  let url =
+    value.trim();
+
+  if (!url) {
+    return "";
+  }
+
+  if (
+    url.startsWith("local://")
+  ) {
+    return url;
+  }
+
+  if (
+    !/^https?:\/\//i.test(url)
+  ) {
+    url =
+      "https://" + url;
+  }
+
+  return url;
+}
+
+
+function openUrl(value) {
+
+  const url =
+    normalizeUrl(value);
+
+  if (!url) {
+    return;
+  }
+
+
+  /*
+   * Las páginas web externas se cargan
+   * dentro del iframe.
+   */
+
+  preview.src =
+    url;
+
+  urlInput.value =
+    url;
+
+
+  /*
+   * Guardar navegación.
+   */
+
+  if (
+    browserHistoryIndex <
+    browserHistory.length - 1
+  ) {
+
+    browserHistory.splice(
+      browserHistoryIndex + 1
+    );
+
+  }
+
+
+  browserHistory.push(url);
+
+  browserHistoryIndex =
+    browserHistory.length - 1;
+
+
+  log(
+    "Abriendo: " + url
+  );
+
+}
+
+
+function browserBack() {
+
+  if (
+    browserHistoryIndex <= 0
+  ) {
+
+    log(
+      "No hay página anterior.",
+      "warning"
+    );
+
+    return;
+
+  }
+
+
+  browserHistoryIndex--;
+
+  const url =
+    browserHistory[
+      browserHistoryIndex
+    ];
+
+  preview.src =
+    url;
+
+  urlInput.value =
+    url;
+
+}
+
+
+function browserForward() {
+
+  if (
+    browserHistoryIndex >=
+    browserHistory.length - 1
+  ) {
+
+    log(
+      "No hay página siguiente.",
+      "warning"
+    );
+
+    return;
+
+  }
+
+
+  browserHistoryIndex++;
+
+  const url =
+    browserHistory[
+      browserHistoryIndex
+    ];
+
+  preview.src =
+    url;
+
+  urlInput.value =
+    url;
+
+}
+
+
+function browserHome() {
+
+  preview.srcdoc =
+    `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+      <style>
+        body {
+          margin: 0;
+          min-height: 100vh;
+          display: grid;
+          place-items: center;
+          background: #101827;
+          color: white;
+          font-family: Arial;
+          text-align: center;
+          padding: 20px;
+        }
+
+        h1 {
+          color: #fbbf24;
+        }
+
+        p {
+          color: #94a3b8;
+        }
+      </style>
+    </head>
+
+    <body>
+
+      <div>
+        <h1>LC HTML Runner</h1>
+
+        <p>
+          Escribe HTML, CSS y JavaScript
+          y pulsa Ejecutar.
+        </p>
+      </div>
+
+    </body>
+    </html>
+    `;
+
+  urlInput.value =
+    "local://lc-html-runner";
+
+}
+
+
+function browserReload() {
+
+  if (
+    preview.src
+  ) {
+
+    try {
+
+      preview.contentWindow.location.reload();
+
+    } catch (error) {
+
+      preview.src =
+        preview.src;
+
+    }
+
+  } else {
+
+    runCode();
+
+  }
+
+}
+
+
+/* =========================
+   EVENTOS DEL NAVEGADOR
+========================= */
+
+document
+  .getElementById("goBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      openUrl(
+        urlInput.value
+      );
+
+    }
+  );
+
+
+urlInput.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Enter"
+    ) {
+
+      openUrl(
+        urlInput.value
+      );
+
+    }
+
+  }
+);
+
+
+document
+  .getElementById("backBtn")
+  .addEventListener(
+    "click",
+    browserBack
+  );
+
+
+document
+  .getElementById("forwardBtn")
+  .addEventListener(
+    "click",
+    browserForward
+  );
+
+
+document
+  .getElementById("homeBtn")
+  .addEventListener(
+    "click",
+    browserHome
+  );
+
+
+document
+  .getElementById(
+    "browserRefreshBtn"
+  )
+  .addEventListener(
+    "click",
+    browserReload
+  );
 
 /* =========================
    BOTONES
