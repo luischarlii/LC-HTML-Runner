@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,35 +16,24 @@
 <header class="topbar">
   <div class="brand">
     <div class="logo">LC</div>
-
     <div>
       <h1>HTML Runner</h1>
       <small>LC Universal Tools</small>
     </div>
   </div>
-
   <button id="installBtn" hidden>Instalar</button>
 </header>
 
 <main>
 
-  <!-- HERRAMIENTAS -->
   <section class="toolbar">
     <button id="newBtn">＋ Nuevo</button>
     <button id="openBtn">📂 Abrir</button>
     <button id="saveBtn">💾 Guardar</button>
     <button id="downloadBtn">⬇️ Descargar</button>
-
-    <input
-      type="file"
-      id="fileInput"
-      accept=".html,.htm,text/html"
-      hidden
-    >
+    <input type="file" id="fileInput" accept=".html,.htm,text/html" hidden>
   </section>
 
-
-  <!-- EDITOR -->
   <section class="editor-section">
 
     <div class="section-title">
@@ -52,159 +42,65 @@
     </div>
 
     <div class="editor-tabs">
-
-      <button
-        class="editor-tab active"
-        data-editor="html">
-        HTML
-      </button>
-
-      <button
-        class="editor-tab"
-        data-editor="css">
-        CSS
-      </button>
-
-      <button
-        class="editor-tab"
-        data-editor="js">
-        JS
-      </button>
-
+      <button class="editor-tab active" data-editor="html">HTML</button>
+      <button class="editor-tab" data-editor="css">CSS</button>
+      <button class="editor-tab" data-editor="js">JS</button>
     </div>
 
+    <textarea id="htmlEditor" class="code-editor"
+      spellcheck="false" autocapitalize="off"
+      autocomplete="off" autocorrect="off"
+      placeholder="Escribe o pega tu código HTML aquí..."></textarea>
 
-    <textarea
-      id="htmlEditor"
-      class="code-editor"
-      spellcheck="false"
-      autocapitalize="off"
-      autocomplete="off"
-      autocorrect="off"
-      placeholder="Escribe o pega tu código HTML aquí..."
-    ></textarea>
+    <textarea id="cssEditor" class="code-editor"
+      spellcheck="false" autocapitalize="off"
+      autocomplete="off" autocorrect="off"
+      placeholder="Escribe tu código CSS aquí..." hidden></textarea>
 
-
-    <textarea
-      id="cssEditor"
-      class="code-editor"
-      spellcheck="false"
-      autocapitalize="off"
-      autocomplete="off"
-      autocorrect="off"
-      placeholder="Escribe tu código CSS aquí..."
-      hidden
-    ></textarea>
-
-
-    <textarea
-      id="jsEditor"
-      class="code-editor"
-      spellcheck="false"
-      autocapitalize="off"
-      autocomplete="off"
-      autocorrect="off"
-      placeholder="Escribe tu código JavaScript aquí..."
-      hidden
-    ></textarea>
-
+    <textarea id="jsEditor" class="code-editor"
+      spellcheck="false" autocapitalize="off"
+      autocomplete="off" autocorrect="off"
+      placeholder="Escribe tu código JavaScript aquí..." hidden></textarea>
 
     <div class="run-toolbar">
-
-      <button id="runBtn" class="primary">
-        ▶ Ejecutar
-      </button>
-
-      <button id="stopBtn">
-        ■ Detener
-      </button>
-
-      <button id="clearBtn">
-        Limpiar
-      </button>
-
+      <button id="runBtn" class="primary">▶ Ejecutar</button>
+      <button id="stopBtn">■ Detener</button>
+      <button id="clearBtn">Limpiar</button>
     </div>
 
   </section>
-
 
   <!-- NAVEGADOR -->
   <section class="preview-section">
 
     <div class="preview-header">
-
-      <strong>
-        🌐 VISTA DEL NAVEGADOR
-      </strong>
-
+      <strong>🌐 VISTA DEL NAVEGADOR</strong>
       <div>
-
-        <button id="refreshBtn">
-          ↻
-        </button>
-
-        <button id="fullscreenBtn">
-          ⛶
-        </button>
-
+        <button id="refreshBtn">↻</button>
+        <button id="fullscreenBtn">⛶</button>
       </div>
-
     </div>
 
-<div class="browser-controls">
+    <!-- BARRA DE NAVEGACIÓN -->
+    <div class="browser-controls">
 
-  <button id="backBtn" title="Atrás">
-    ←
-  </button>
+      <button id="backBtn" title="Atrás">←</button>
+      <button id="forwardBtn" title="Adelante">→</button>
+      <button id="homeBtn" title="Inicio">🏠</button>
 
-  <button id="forwardBtn" title="Adelante">
-    →
-  </button>
+      <input
+        id="urlInput"
+        type="text"
+        inputmode="url"
+        autocomplete="off"
+        placeholder="Escribe una dirección web..."
+        value="local://lc-html-runner"
+      >
 
-  <button id="homeBtn" title="Inicio">
-    🏠
-  </button>
+      <button id="goBtn">Ir</button>
+      <button id="browserRefreshBtn" title="Recargar">↻</button>
 
-  <input
-    id="urlInput"
-    type="url"
-    inputmode="url"
-    autocomplete="off"
-    placeholder="Escribe una dirección web..."
-    value="local://lc-html-runner"
-  >
-
-  <button id="goBtn">
-    Ir
-  </button>
-
-  <button id="browserRefreshBtn" title="Recargar">
-    ↻
-  </button>
-
-</div>
-<div class="browser-controls">
-
-  <button id="backBtn" title="Atrás">←</button>
-
-  <button id="forwardBtn" title="Adelante">→</button>
-
-  <button id="homeBtn" title="Inicio">🏠</button>
-
-  <input
-    id="urlInput"
-    type="url"
-    inputmode="url"
-    autocomplete="off"
-    placeholder="Escribe una dirección web..."
-    value="local://lc-html-runner"
-  >
-
-  <button id="goBtn">Ir</button>
-
-  <button id="browserRefreshBtn" title="Recargar">↻</button>
-
-</div>
+    </div>
 
     <iframe
       id="preview"
@@ -215,35 +111,23 @@
 
   </section>
 
-
   <!-- CONSOLA -->
   <section class="console-section">
 
     <div class="console-header">
-
-      <strong>
-        🖥️ CONSOLA
-      </strong>
-
-      <button id="clearConsoleBtn">
-        Borrar
-      </button>
-
+      <strong>🖥️ CONSOLA</strong>
+      <button id="clearConsoleBtn">Borrar</button>
     </div>
 
-    <pre id="consoleOutput">
-LC HTML Runner listo.
-    </pre>
+    <pre id="consoleOutput">LC HTML Runner listo.</pre>
 
   </section>
 
 </main>
 
-
 <footer>
   LC HTML Runner · Luis Charlii
 </footer>
-
 
 <script src="./app.js"></script>
 
