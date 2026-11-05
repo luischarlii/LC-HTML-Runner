@@ -151,16 +151,38 @@
 
     </div>
 
+<div class="browser-controls">
 
-    <div id="browserBar">
+  <button id="backBtn" title="Atrás">
+    ←
+  </button>
 
-      <span>🔒</span>
+  <button id="forwardBtn" title="Adelante">
+    →
+  </button>
 
-      <span id="browserUrl">
-        local://lc-html-runner
-      </span>
+  <button id="homeBtn" title="Inicio">
+    🏠
+  </button>
 
-    </div>
+  <input
+    id="urlInput"
+    type="url"
+    inputmode="url"
+    autocomplete="off"
+    placeholder="Escribe una dirección web..."
+    value="local://lc-html-runner"
+  >
+
+  <button id="goBtn">
+    Ir
+  </button>
+
+  <button id="browserRefreshBtn" title="Recargar">
+    ↻
+  </button>
+
+</div>
 
 
     <iframe
