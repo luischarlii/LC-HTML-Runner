@@ -1,7 +1,7 @@
 
 "use strict";
 
-const CACHE_NAME = "lc-html-runner-v1";
+const CACHE_NAME = "lc-html-runner-v2";
 
 const APP_FILES = [
   "./",
@@ -11,6 +11,7 @@ const APP_FILES = [
   "./manifest.json"
 ];
 
+// Instalar nueva versión
 self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -19,19 +20,25 @@ self.addEventListener("install", event => {
   );
 });
 
+// Activar y eliminar cachés antiguas
 self.addEventListener("activate", event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(key => key.startsWith("lc-html-runner-") &&
-                         key !== CACHE_NAME)
-          .map(key => caches.delete(key))
+    caches.keys()
+      .then(keys =>
+        Promise.all(
+          keys
+            .filter(key =>
+              key.startsWith("lc-html-runner-") &&
+              key !== CACHE_NAME
+            )
+            .map(key => caches.delete(key))
+        )
       )
-    ).then(() => self.clients.claim())
+      .then(() => self.clients.claim())
   );
 });
 
+// Actualizar archivos desde GitHub Pages
 self.addEventListener("fetch", event => {
   const request = event.request;
 
@@ -41,21 +48,30 @@ self.addEventListener("fetch", event => {
 
   if (url.origin !== self.location.origin) return;
 
-  event.respondWith(
-    caches.match(request).then(cached => {
-      if (cached) return cached;
+  // No interceptar navegación externa
+  if (request.mode === "navigate") {
+    event.respondWith(
+      fetch(request)
+        .then(response => {
+          return response;
+        })
+        .catch(() => caches.match("./index.html"))
+    );
+    return;
+  }
 
-      return fetch(request).then(response => {
+  event.respondWith(
+    fetch(request)
+      .then(response => {
         if (response.ok && response.type === "basic") {
           const copy = response.clone();
 
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(request, copy);
-          });
+          caches.open(CACHE_NAME)
+            .then(cache => cache.put(request, copy));
         }
 
         return response;
-      });
-    }).catch(() => caches.match("./index.html"))
+      })
+      .catch(() => caches.match(request))
   );
 });
