@@ -1,134 +1,350 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101827">
-  <meta name="description" content="LC HTML Runner - Editor y navegador HTML">
-  <link rel="manifest" href="./manifest.json">
-  <title>LC HTML Runner</title>
-  <link rel="stylesheet" href="./style.css">
-</head>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="LC Runner">
+<meta name="theme-color" content="#0b1020">
+<title>LC HTML Runner</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#0b1020;--p:#161d33;--t:#f2f4fa;--m:#8b94b3;--g:#f5b301;--b:#27304d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--t);font:15px -apple-system,system-ui,sans-serif;display:flex;flex-direction:column}
+header{height:54px;flex:none;background:url(banner.jpg) center 12%/cover;border-bottom:2px solid var(--g)}
+main{flex:1;min-height:0;position:relative}
+.v{position:absolute;inset:0;display:none;flex-direction:column}.v.on{display:flex}
+.bar{display:flex;gap:6px;padding:8px;background:var(--p);border-bottom:1px solid var(--b);align-items:center;flex-wrap:wrap}
+button,select{background:var(--b);color:var(--t);border:0;border-radius:8px;padding:9px 12px;font-size:15px}
+button.g{background:var(--g);color:#111;font-weight:700}button:disabled{opacity:.35}
+input{flex:1;min-width:110px;background:var(--bg);color:var(--t);border:1px solid var(--b);border-radius:8px;padding:9px;font-size:15px}
+textarea{flex:1;width:100%;background:#0d1326;color:#dfe6ff;border:0;padding:12px;font:13px/1.5 ui-monospace,Menlo,monospace;resize:none;outline:0;tab-size:2}
+iframe{flex:1;border:0;background:#fff;width:100%}
+#list{overflow:auto;padding:10px;display:grid;gap:8px;align-content:start}
+.it{background:var(--p);border:1px solid var(--b);border-radius:10px;padding:12px;display:flex;gap:8px;align-items:center}
+.it b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.it small{color:var(--m)}
+.tag{color:var(--g);font-weight:700;font-size:11px;margin-right:6px}
+nav{flex:none;display:flex;background:var(--p);border-top:1px solid var(--b)}
+nav button{flex:1;border-radius:0;background:none;color:var(--m);padding:13px 4px}nav button.on{color:var(--g);box-shadow:inset 0 2px var(--g)}
+.empty{color:var(--m);text-align:center;padding:30px}
+@media(min-width:900px){nav{display:none}main{display:flex}.v{position:static;display:flex;flex:1}#vL{max-width:300px}}
+</style></head><body>
+<header></header>
+<div style="flex:none">
+<!-- ===== 2. Apoyo Mercado Pago ===== -->
+<!-- Botón Apoyo con Mercado Pago en la cabecera -->
+<!-- Cambia "LC HTML Runner" (abajo y en "Beneficiario") por el nombre de la app donde lo instales -->
+<div class="lc-support">
+  <button id="lcDonateBtn" class="lc-support-trigger"
+          aria-expanded="false">
+    <span class="lc-heart">♡</span>
+    <span class="lc-support-text">
+      <strong>Te Gustaria Apoyar LC HTML Runner</strong>
+      <small>Donaciones voluntarias</small>
+    </span>
+    <span id="lcArrow">⌄</span>
+  </button>
 
-<body>
-
-<header class="topbar">
-  <div class="brand">
-    <div class="logo">LC</div>
-    <div>
-      <h1>HTML Runner</h1>
-      <small>LC Universal Tools</small>
-    </div>
-  </div>
-  <button id="installBtn" hidden>Instalar</button>
-</header>
-
-<main>
-
-  <section class="toolbar">
-    <button id="newBtn">＋ Nuevo</button>
-    <button id="openBtn">📂 Abrir</button>
-    <button id="saveBtn">💾 Guardar</button>
-    <button id="downloadBtn">⬇️ Descargar</button>
-    <input type="file" id="fileInput" accept=".html,.htm,text/html" hidden>
-  </section>
-
-  <section class="editor-section">
-
-    <div class="section-title">
-      <span>EDITOR</span>
-      <span id="fileName">Sin título.html</span>
-    </div>
-
-    <div class="editor-tabs">
-      <button class="editor-tab active" data-editor="html">HTML</button>
-      <button class="editor-tab" data-editor="css">CSS</button>
-      <button class="editor-tab" data-editor="js">JS</button>
-    </div>
-
-    <textarea id="htmlEditor" class="code-editor"
-      spellcheck="false" autocapitalize="off"
-      autocomplete="off" autocorrect="off"
-      placeholder="Escribe o pega tu código HTML aquí..."></textarea>
-
-    <textarea id="cssEditor" class="code-editor"
-      spellcheck="false" autocapitalize="off"
-      autocomplete="off" autocorrect="off"
-      placeholder="Escribe tu código CSS aquí..." hidden></textarea>
-
-    <textarea id="jsEditor" class="code-editor"
-      spellcheck="false" autocapitalize="off"
-      autocomplete="off" autocorrect="off"
-      placeholder="Escribe tu código JavaScript aquí..." hidden></textarea>
-
-    <div class="run-toolbar">
-      <button id="runBtn" class="primary">▶ Ejecutar</button>
-      <button id="stopBtn">■ Detener</button>
-      <button id="clearBtn">Limpiar</button>
-    </div>
-
-  </section>
-
-  <!-- NAVEGADOR -->
-  <section class="preview-section">
-
-    <div class="preview-header">
-      <strong>🌐 VISTA DEL NAVEGADOR</strong>
-      <div>
-        <button id="refreshBtn">↻</button>
-        <button id="fullscreenBtn">⛶</button>
-      </div>
-    </div>
-
-    <!-- BARRA DE NAVEGACIÓN -->
-    <div class="browser-controls">
-
-      <button id="backBtn" title="Atrás">←</button>
-      <button id="forwardBtn" title="Adelante">→</button>
-      <button id="homeBtn" title="Inicio">🏠</button>
-
-      <input
-        id="urlInput"
-        type="text"
-        inputmode="url"
-        autocomplete="off"
-        placeholder="Escribe una dirección web..."
-        value="local://lc-html-runner"
+  <div id="lcDonationDetails" class="lc-support-details" hidden>
+    <div class="lc-bank">
+      <img
+        src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/mercado-pago/default.svg"
+        alt="Mercado Pago"
       >
-
-      <button id="goBtn">Ir</button>
-      <button id="browserRefreshBtn" title="Recargar">↻</button>
-
+      <strong>Mercado Pago W</strong>
     </div>
 
-    <iframe
-      id="preview"
-      title="Vista previa HTML"
-      sandbox="allow-scripts allow-forms allow-modals allow-popups"
-      referrerpolicy="no-referrer">
-    </iframe>
+    <p><strong>Beneficiario:</strong><br>
+      LC HTML Runner</p>
+    <!-- "LC HTML Runner" aquí debe quedar igual que en el botón de arriba -->
 
-  </section>
+    <p><strong>CLABE interbancaria:</strong></p>
 
-  <!-- CONSOLA -->
-  <section class="console-section">
-
-    <div class="console-header">
-      <strong>🖥️ CONSOLA</strong>
-      <button id="clearConsoleBtn">Borrar</button>
+    <div class="lc-clabe">
+      <span id="lcClabe">CLABE oculta •••• •••• •••• ••••</span>
+      <button id="lcCopyBtn">Copiar CLABE</button>
     </div>
 
-    <pre id="consoleOutput">LC HTML Runner listo.</pre>
+    <p class="lc-thanks">
+      ¡Gracias por apoyar este proyecto!
+    </p>
+    <small>Tu aportación es completamente voluntaria.</small>
+  </div>
+</div>
 
-  </section>
+<style>
 
+.lc-radio-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 15px 0;
+}
+
+.lc-radio-header img {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.lc-radio-header h1 {
+  margin: 0;
+  font-size: 25px;
+}
+
+.lc-support {
+  max-width: 390px;
+  margin: 15px auto;
+  background: #101827;
+  border: 1px solid #34445b;
+  border-radius: 12px;
+  color: white;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+.lc-support-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 14px;
+  background: transparent;
+  border: 0;
+  color: white;
+  text-align: left;
+  cursor: pointer;
+}
+
+.lc-heart {
+  color: #d4af37;
+  font-size: 25px;
+}
+
+.lc-support-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.lc-support-text strong {
+  font-size: 13px;
+}
+
+.lc-support-text small {
+  font-size: 11px;
+  color: #aebbd0;
+}
+
+#lcArrow {
+  color: #d4af37;
+  font-size: 20px;
+}
+
+.lc-support-details {
+  border-top: 1px solid #34445b;
+  padding: 15px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.lc-bank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  font-size: 17px;
+}
+
+.lc-bank img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  background: white;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.lc-clabe {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background: #1f2937;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+}
+
+#lcCopyBtn {
+  background: #d4af37;
+  color: #101827;
+  border: none;
+  border-radius: 7px;
+  padding: 9px 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.lc-thanks {
+  color: #f5c542;
+  font-weight: bold;
+  margin-top: 17px;
+}
+</style>
+
+<script>
+(() => {
+  const clabe = "722969010061473580";
+  const trigger = document.getElementById("lcDonateBtn");
+  const details = document.getElementById("lcDonationDetails");
+  const arrow = document.getElementById("lcArrow");
+  const copy = document.getElementById("lcCopyBtn");
+
+  trigger.addEventListener("click", () => {
+    const opening = details.hidden;
+    details.hidden = !opening;
+    trigger.setAttribute("aria-expanded", String(opening));
+    arrow.textContent = opening ? "⌃" : "⌄";
+  });
+
+  copy.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(clabe);
+    } catch {
+      // Respaldo para iPhone/Safari si el portapapeles moderno falla
+      const t = document.createElement("textarea");
+      t.value = clabe;
+      t.style.position = "fixed";
+      t.style.opacity = "0";
+      document.body.appendChild(t);
+      t.select();
+      try { document.execCommand("copy"); } catch {}
+      document.body.removeChild(t);
+    }
+    copy.textContent = "¡Copiada!";
+    setTimeout(() => (copy.textContent = "Copiar CLABE"), 2000);
+  });
+})();
+</script>
+<!-- Botón Apoyo mercado Final -->
+<!-- ===== fin Apoyo Mercado Pago ===== -->
+</div>
+<main>
+<section class="v on" id="vE"><div class="bar">
+<select id="type"><option value="html">HTML</option><option value="css">CSS</option><option value="js">JS</option><option value="json">JSON</option></select>
+<input id="name" placeholder="Nombre del código">
+<button id="new">Nuevo</button><button class="g" id="run">▶ Ejecutar</button><button id="save">Guardar</button></div>
+<textarea id="code" spellcheck="false" autocapitalize="off" autocorrect="off"></textarea></section>
+<section class="v" id="vP"><div class="bar">
+<button id="bk">←</button><button id="fw">→</button><button id="rl">⟳</button>
+<input id="url" placeholder="Nombre guardado o URL https://" enterkeyhint="go"><button class="g" id="go">Ir</button></div>
+<iframe id="fr" sandbox="allow-scripts allow-forms allow-modals allow-popups allow-same-origin"></iframe></section>
+<section class="v" id="vL"><div class="bar"><input id="q" placeholder="Buscar guardados…"><button id="imp">Importar</button><button id="exp">Exportar</button></div><div id="list"></div></section>
 </main>
+<nav><button data-v="vE" class="on">✏️ Editor</button><button data-v="vP">🌐 Vista</button><button data-v="vL">📁 Guardados</button></nav>
+<script>
+const $=i=>document.getElementById(i);
+const TPL={
+html:'<!DOCTYPE html>\n<html lang="es">\n<head>\n  <title>LC HTML Runner</title>\n</head>\n<body>\n  <h1>¡Tu código en acción!</h1>\n</body>\n</html>',
+css:'body{font-family:sans-serif;background:#fffbe6;padding:16px}\nh1{color:#b7791f}\nbutton{background:#f5b301;border:0;padding:10px 16px;border-radius:8px}',
+js:"console.log('¡Tu código en acción!');\nconsole.log([1,2,3].map(n=>n*2));",
+json:'{\n  "nombre": "LC HTML Runner",\n  "tipos": ["HTML","CSS","JS","JSON"]\n}'};
+const SAMPLE='<h1>Título principal</h1><h2>Subtítulo</h2><p>Un párrafo con <a href="#">un enlace</a> y <b>texto en negrita</b>.</p><button>Botón</button> <input placeholder="Campo de texto"><ul><li>Elemento 1</li><li>Elemento 2</li></ul><div class="card box">Caja (.card .box)</div>';
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const OUT=h=>'<!DOCTYPE html><meta name="viewport" content="width=device-width,initial-scale=1"><body style="margin:0;padding:14px;background:#fff;color:#111;font:14px/1.5 ui-monospace,Menlo,monospace"><pre style="white-space:pre-wrap;margin:0">'+h+'</pre>';
+function build(t,c){
+ if(t==='css')return '<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>'+c+'</style></head><body>'+SAMPLE+'</body></html>';
+ if(t==='json'){try{return OUT('<b style="color:#2e9d4f">✓ JSON válido</b>\n\n'+esc(JSON.stringify(JSON.parse(c),null,2)))}catch(e){return OUT('<b style="color:#d33">✗ JSON inválido</b>\n\n'+esc(e.message))}}
+ if(t==='js'){const s="const o=document.getElementById('o');const w=(c,a)=>{const d=document.createElement('div');if(c)d.style.color=c;d.textContent=a.map(x=>typeof x==='object'?JSON.stringify(x,null,1):String(x)).join(' ');o.appendChild(d)};console.log=(...a)=>w('',a);console.info=console.log;console.warn=(...a)=>w('#b7791f',a);console.error=(...a)=>w('#d33',a);onerror=m=>{w('#d33',['Error: '+m])};addEventListener('unhandledrejection',e=>w('#d33',['Error: '+e.reason]));try{(0,eval)("+JSON.stringify(c).replace(/</g,'\\u003c')+")}catch(e){w('#d33',['Error: '+e.message])}";
+  return OUT('').replace('<pre ','<pre id="o" ')+'<script>'+s+'<\/script>'}
+ return c}
+let items=[],cur=null,hist=[],pos=-1;
+try{items=JSON.parse(localStorage.getItem('lcr')||'[]')}catch(e){}
+try{$('code').value=localStorage.getItem('lcr_draft')||TPL.html}catch(e){$('code').value=TPL.html}
+const store=()=>{try{localStorage.setItem('lcr',JSON.stringify(items))}catch(e){alert('No se pudo guardar en este navegador.')}};
+function show(v){document.querySelectorAll('.v').forEach(s=>s.classList.toggle('on',s.id===v));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v))}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.v));
+function draw(){const e=hist[pos];$('bk').disabled=pos<1;$('fw').disabled=pos>=hist.length-1;
+ if(!e){$('fr').srcdoc='<body style="font:16px sans-serif;color:#888;text-align:center;padding:40px">Pulsa ▶ Ejecutar para ver tu código aquí</body>';$('url').value='';return}
+ if(e.k==='u'){$('fr').removeAttribute('srcdoc');$('fr').src=e.v;$('url').value=e.v}
+ else{$('fr').removeAttribute('src');$('fr').srcdoc=e.v;$('url').value=e.n||'(borrador)'}}
+function nav(e){hist=hist.slice(0,pos+1);hist.push(e);pos=hist.length-1;draw()}
+const runIt=x=>nav({k:'c',v:build(x.type||'html',x.code),n:x.name});
+$('run').onclick=()=>{runIt({type:$('type').value,code:$('code').value,name:$('name').value||'(borrador)'});show('vP')};
+$('save').onclick=()=>{const n=$('name').value.trim()||'Sin título',c=$('code').value,t=$('type').value;
+ let it=cur&&items.find(x=>x.id===cur);
+ if(it){it.name=n;it.code=c;it.type=t;it.t=Date.now()}else{it={id:Date.now().toString(36),name:n,code:c,type:t,t:Date.now()};items.unshift(it);cur=it.id}
+ store();render();$('save').textContent='✓ Guardado';setTimeout(()=>$('save').textContent='Guardar',1200)};
+$('new').onclick=()=>{cur=null;$('name').value='';$('code').value=TPL[$('type').value]};
+$('type').onchange=()=>{const c=$('code').value;if(!c.trim()||Object.values(TPL).includes(c))$('code').value=TPL[$('type').value]};
+$('code').oninput=()=>{try{localStorage.setItem('lcr_draft',$('code').value)}catch(e){}};
+$('code').onkeydown=e=>{if(e.key==='Tab'){e.preventDefault();document.execCommand('insertText',false,'  ')}};
+$('bk').onclick=()=>{if(pos>0){pos--;draw()}};$('fw').onclick=()=>{if(pos<hist.length-1){pos++;draw()}};
+$('rl').onclick=draw;
+function go(){let v=$('url').value.trim();if(!v)return;
+ const it=items.find(x=>x.name.toLowerCase()===v.toLowerCase());
+ if(it)return runIt(it);
+ if(!/^https?:\/\//i.test(v))v='https://'+v;nav({k:'u',v})}
+$('go').onclick=go;$('url').onkeydown=e=>{if(e.key==='Enter')go()};
+function render(){const q=$('q').value.toLowerCase(),l=$('list');l.innerHTML='';
+ const f=items.filter(x=>x.name.toLowerCase().includes(q));
+ if(!f.length){l.innerHTML='<div class="empty">'+(items.length?'Sin resultados':'Aún no tienes códigos guardados')+'</div>';return}
+ f.forEach(x=>{const d=document.createElement('div');d.className='it';
+  d.innerHTML='<div style="flex:1;min-width:0"><b></b><small><span class="tag"></span></small></div><button>▶</button><button>✏️</button><button>🗑</button>';
+  d.querySelector('b').textContent=x.name;d.querySelector('.tag').textContent=(x.type||'html').toUpperCase();
+  d.querySelector('small').append(new Date(x.t).toLocaleString('es'));
+  const[b1,b2,b3]=d.querySelectorAll('button');
+  b1.onclick=()=>{runIt(x);show('vP')};
+  b2.onclick=()=>{cur=x.id;$('name').value=x.name;$('type').value=x.type||'html';$('code').value=x.code;show('vE')};
+  b3.onclick=()=>{if(confirm('¿Eliminar "'+x.name+'"?')){items=items.filter(i=>i!==x);if(cur===x.id)cur=null;store();render()}};
+  l.appendChild(d)})}
+$('q').oninput=render;
+$('exp').onclick=()=>{const t=JSON.stringify(items,null,1);
+ try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'application/json'}));a.download='lc-runner-respaldo.json';a.click()}catch(e){prompt('Copia tu respaldo:',t)}};
+$('imp').onclick=()=>{const f=document.createElement('input');f.type='file';f.accept='.json,application/json';
+ f.onchange=async()=>{try{const a=JSON.parse(await f.files[0].text());if(!Array.isArray(a))throw 0;
+  a.forEach(x=>{if(x&&x.code!=null&&!items.some(i=>i.id===x.id))items.push({id:x.id||Date.now().toString(36)+Math.random().toString(36).slice(2,5),name:x.name||'Sin título',code:x.code,type:x.type||'html',t:x.t||Date.now()})});
+  items.sort((a,b)=>b.t-a.t);store();render()}catch(e){alert('Archivo de respaldo no válido.')}};f.click()};
+if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+render();draw();
+</script>
+<!-- ===== 3. Contador de usuarios ===== -->
+<!-- Cambia el valor de APP por el nombre de la app donde lo instales -->
+<script>
+(function () {
+  var APP = "runner";
+  var ENDPOINT = "https://contador.paragugliar.workers.dev/ping";
+  try {
+    var id = localStorage.getItem("uid");
+    if (!id) {
+      id = crypto.randomUUID ? crypto.randomUUID() : Date.now() + "-" + Math.random().toString(36).slice(2);
+      localStorage.setItem("uid", id);
+    }
+    var hoy = new Date().toDateString();
+    if (localStorage.getItem("ping_" + APP) === hoy) return; // ya se reportó hoy
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify({ app: APP, id: id }),
+      keepalive: true,
+    }).then(function () { localStorage.setItem("ping_" + APP, hoy); }).catch(function () {});
+  } catch (e) {}
+})();
+</script>
+<!-- ===== fin Contador de usuarios ===== -->
 
-<footer>
-  LC HTML Runner · Luis Charlii
-</footer>
-
-<script src="./app.js"></script>
-
-</body>
-</html>
+<!-- ===== 1. LC-Ads ===== -->
+<script
+  src="https://luischarlii.github.io/LC-Ads/lc-ads.js?v=2"
+  data-app="all">
+</script>
+<!-- ===== fin LC-Ads ===== -->
+</body></html>
